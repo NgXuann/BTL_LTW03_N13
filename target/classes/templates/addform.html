@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Student</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script type="text/javascript">
+	function choosefile(fileInput) {
+		if (fileInput.files && fileInput.files[0]) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$("#img").attr('src', e.target.result);
+			}
+			reader.readAsDataURL(fileInput.files[0]);
+		}
+	}
+</script>
+<style type="text/css">
+.row {
+	text-align: center;
+}
+
+form {
+	display: flex;
+	justify-content: space-between;
+	margin: 0 100px;
+}
+
+input, select {
+	width: 140px;
+	height: 36px;
+}
+
+.field {
+	display: flex;
+	align-items: center;
+	margin-bottom: 32px;
+}
+
+.field label {
+	width: 300px;
+}
+
+textarea {
+	width: 445px;
+	height: 130px;
+}
+
+.right {
+	margin-top: 20px;
+}
+
+.right label {
+	margin-right: 20px;
+}
+
+#img {
+	width: 500px;
+	height: 400px;
+}
+
+#submitbtn {
+	margin-top: 40px;
+	width: 200px;
+	float: right;
+}
+
+body {
+	background-image:
+		url("https://goink.me/LAV1");
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-size: 100% 100%;
+}
+
+.field {
+	display: inline-flex;
+}
+</style>
+</head>
+<body>
+	<div class="row">
+		<h1 th:text="${mode}"></h1>
+	</div>
+	<form th:object="${book}" method="post"
+		th:with="hid=${mode=='View book'}"
+		th:action="@{${hid}?'/books/edit/'+${book.id}:'/books/save'}"
+		enctype="multipart/form-data">
+		<div>
+			<input type="number" th:field="*{id}" required readonly
+				style="display: none" /> <br />
+
+			<div class="field">
+				<label>Tiêu đề* <br /> <input type="text"
+					th:field="*{tieude}" required th:disabled="${hid}" />
+			</div>
+			<div class="field">
+				<label>Tác giả* <br /> <input type="text"
+					th:field="*{tacgia}" required th:disabled="${hid}" />
+			</div>
+			<!-- 	    	<div class="field">
+		    	<label>Tác giả*:</label>
+		    	<input type="text" th:field="*{tacgia}" required th:disabled="${hid}"/><br/>
+	    	</div> -->
+			<br />
+			<div class="field">
+				<label>Mô tả:<br /> <textarea rows="4" cols="50"
+						th:field="*{mota}" th:disabled="${hid}"></textarea><br />
+			</div>
+			<br />
+			<div class="field">
+				<label>Ngày phát hành* <br /> <input type="date"
+					th:field="*{ngayphathanh}" required th:disabled="${hid}" /> <br />
+			</div>
+
+			<div class="field">
+				<label>Số trang <br /> <input type="number" min="1"
+					th:field="*{sotrang}" th:disabled="${hid}" /> <br />
+			</div>
+			<br />
+			<div class="field">
+				<label>Thể loại <br /> <select th:field="*{theloai}"
+					th:disabled="${hid}">
+						<option value="Chính trị – pháp luật">Chính trị – pháp
+							luật</option>
+						<option value="Khoa học công nghệ">Khoa học công nghệ</option>
+						<option value="Kinh tế">Kinh tế</option>
+						<option value="Văn học nghệ thuật">Văn học nghệ thuật</option>
+						<option value="Truyện, tiểu thuyết">Truyện, tiểu thuyết</option>
+						<option value="Sách thiếu nhi">Sách thiếu nhi</option>
+				</select> <br />
+			</div>
+
+		</div>
+
+		<div class='right'>
+			<label>Ảnh:</label> <input type="file" name="image" accept="image/* "
+				onchange="choosefile(this)" th:disabled="${hid}" /><br /> <img
+				id="img" th:src="@{'/getimage/'+*{anh!=null?anh:''}}"><br />
+			<input id='submitbtn' type="submit" th:value="${btn}">
+		</div>
+
+	</form>
+</body>
+</html>

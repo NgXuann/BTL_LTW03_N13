@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Thư Viện nhóm 13</title>
+	<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+	<script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+<style>
+body {
+	background-image:
+		url("https://goink.me/LAV1");
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-size: 100% 100%;
+}
+</style>
+</head>
+<body>
+	<div class="container">
+		<div class="row" >
+			<h1>List Books</h1>
+		</div>
+		<div class = "row">
+			<div class = "col-lg-3">
+				<a th:if="${session.email!=null}"  th:href = "@{/addform}" class = "btn btn-primary btn-sm mb-3"> Add Book</a>
+				<a th:if="${session.email!=null}"  th:href = "@{/logout}" class = "btn btn-primary btn-sm mb-3"> Logout</a>
+			</div>
+		</div>
+
+		<table class="table table-bordered table-striped table-danger">
+			<thead class = "table-dark">
+				<tr>
+					<th>Tiêu đề</th>
+					<th>Tác giả</th>
+					<th>Ngày phát hành</th>
+					<th>Số trang</th>
+					<th>Thể loại</th>
+					<th th:if="${session.email!=null}"></th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<tr th:each="book: ${listBooks}">
+					<td th:text = "${book.tieude}"></td>
+					<td th:text = "${book.tacgia}"></td>
+					<td th:text = "${book.ngayphathanh}"></td>
+					<td th:text = "${book.sotrang}"></td>
+					<td th:text = "${book.theloai}"></td>
+					<td th:if="${session.email!=null}">
+						<a th:href="@{/books/view/{id}(id=${book.id})}" class= "btn btn-success"> View </a>
+						<a th:href="@{/books/delete/{id}(id=${book.id})}" class= "btn btn-success"
+						th:onclick="javascript:return confirm('Are you sure you want to delete this book?')"> Delete </a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+</body>
+</html>
